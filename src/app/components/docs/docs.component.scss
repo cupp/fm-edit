@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
+table {
+  text-align: center;
+  font-family: Garamond;
+  margin-top: 1.5%;
+  background-color: #d6ffdf; //#e5e5ff;
+  margin-bottom: 45px;
+}
+
+th, td {
+  border: 2px solid black;
+}
+
+th {
+  font-size: 28px;
+  color: white;
+  background-color: #27823a;
+  font-family: 'Didact Gothic', sans-serif;
+}
+
+td {
+  width: 30%;
+  font-size: 20px;
+  font-family: 'Didact Gothic', sans-serif;
+}
+
+body {
+  background-color: white;
+}
+
+.key {
+  text-align: center;
+}
+
+.content {
+  margin-left: 2%;
+  margin-top: 2%;
+}
+
+tr:nth-child(even) {background-color: white;}
+
+.row {
+  text-align: center;
+}

@@ -1,0 +1,8 @@
+{
+    "name": "fm-edit",
+    "productName": "fm-edit",
+    "version": "0.0.0",
+    "description": "fm-edit",
+    "main": "electron.prod.js",
+    "license": "MIT"
+}

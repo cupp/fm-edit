@@ -1,0 +1,63 @@
+<body>
+  <div class="preamble">
+    <h2>The Preamble</h2>
+    <img class="underline" src="http://www.clker.com/cliparts/G/u/S/n/Z/6/underline-1.svg">
+    <p class="intro">Hello, world! Welcome to our web browser application, The Proof Testament.
+      As you may know, Formal Methods is one of the first classes you enroll in
+      as a Computer Science student at Pepperdine University. In this course, you
+      will learn and practice the formal methodology in understanding and solving proofs.
+      However, writing out proofs by hand may be tedious, frustrating, and time-consuming
+      (and your professors may not appreciate your handwriting skills; you know
+      who you are). With our app, you should be able to construct proofs at a faster
+      rate than ever before! Now, without further ado, allow us to introduce the bright
+       minds of our development team:</p>
+  </div>
+  <div class="row">
+  <div class="descriptions">
+    <div *ngFor="let contributor of contributors" class="left">
+      <app-about-user
+      [name]="contributor.name"
+      [title]="contributor.title"
+      [description]="contributor.description"
+      [projects]="contributor.projects"
+      [linkedIn]="contributor.linkedIn"
+      [gitHub]="contributor.gitHub"
+      [facebook]="contributor.facebook"
+      [twitter]="contributor.twitter"
+      [pic]="contributor.pic">
+      </app-about-user>
+    </div>
+  </div>
+</div>
+<hr>
+<h1 style="text-align: center" class="mentor"><i>Our Mentors</i></h1>
+<div class="profRow">
+  <div class="profCol">
+    <div class="title">
+      <img src="https://seaver.pepperdine.edu/naturalscience/images/faculty/stan_warford2.jpg" class="profPic">
+      <h2>Dr. Stan Warford</h2>
+    </div>
+    <div>
+      <h4><u>Accolades</u></h4>
+      <ul>
+        <ol>Ph.D., Engineering, UCLA, 1984</ol>
+        <ol>M.S., Physics, Rensselaer Polytechnic Institute, 1968</ol>
+        <ol>B.S., Mathematics, Pepperdine College, 1966</ol>
+      </ul>
+    </div>
+  </div>
+  <div class="profCol">
+    <div class="title">
+      <img src="https://seaver.pepperdine.edu/naturalscience/images/faculty/brad_cupp.jpg" class="profPic">
+      <h2>Professor Cupp</h2>
+    </div>
+    <div>
+      <h4><u>Accolades</u></h4>
+      <ul>
+        <ol>B.A., Computer Science and Math, Pepperdine University, 1992</ol>
+        <ol>M.A., Linguistics, University of Virginia, 1996</ol>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>

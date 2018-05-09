@@ -1,0 +1,62 @@
+<!-- <div *ngIf="infoFilled"> -->
+<div>
+    <quill-editor
+    [(ngModel)]="outline"
+    [modules]="modules"
+    (onEditorCreated)="addBindingCreated($event)"
+    (onSelectionChanged)="updateSelection($event)"
+    (onContentChanged)="updateSelection($event)">
+    <div quill-editor-toolbar>
+        <span id="symbolSelction" class="ql-formats">
+          <div ngbDropdown class="d-inline-block2">
+            <button class="btn" id="dropdownBasic2" ngbDropdownToggle style="width: auto;">Symbols &#8645;</button>
+            <div class="symbolBtn" ngbDropdownMenu aria-labelledby="dropdownBasic2">
+              <button
+                *ngFor="let symbol of keys(symbols)"
+                [value]="symbol"
+                [innerHTML]="symbols[symbol]"
+                type="button"
+                class="dropdown-item"
+                (click)="insertSymbol($event.target)">
+              </button>
+            </div>
+          </div>
+        </span>
+        <span class="ql-formats">
+          <div [hidden]="hideSymbols">
+            <div ngbDropdown class="d-inline-block2">
+              <button class="btn" id="dropdownBasic2" ngbDropdownToggle>Hints &#8645;</button>
+              <div class="symbolBtn" ngbDropdownMenu aria-labelledby="dropdownBasic2">
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="equalsBtn" value="equals" [innerHTML]="equalsUnicode"></button>
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="impliesBtn" value="implies" [innerHTML]="impliesUnicode"></button>
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="followsFromBtn" value="followsFrom" [innerHTML]="followsFromUnicode"></button>
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="lessThanBtn" value="lessThan" [innerHTML]="lessThanUnicode"></button>
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="greaterThanBtn" value="greaterThan" [innerHTML]="greaterThanUnicode"></button>
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="lessThanOrEqBtn" value="lessThanOrEq" [innerHTML]="lessThanOrEqUnicode"></button>
+              <button (click)="symbolSelectorChanged($event.target.value)" class="symbolBtn2" id="greaterThanOrEqBtn" value="greaterThanOrEq" [innerHTML]="greaterThanorEqUnicode"></button>
+              </div>
+            </div>
+          </div>
+        </span>
+      <!-- <span class="ql-formats">
+          
+          <div ngbDropdown class="d-inline-block2">
+            <button class="btn" id="dropdownBasic2" ngbDropdownToggle style="width: auto;">File &#8645;</button>
+            <div class="fileBtn" ngbDropdownMenu aria-labelledby="dropdownBasic2">
+              <button (click)="file($event.target.value)" class="saveBtn" value="open">Open</button>
+              <button (click)="file($event.target.value)" class="saveBtn" value="save">Save</button>
+              <button (click)="file($event.target.value)" class="saveBtn" value="saveAs">Save As</button>
+            </div>
+          </div>
+
+      </span>
+      <span class="ql-formats" style="float:right">
+        <button (click)="addNewThm()" class="fa fa-plus-circle" style="color:rgb(130, 172, 96)"></button>
+      </span>
+      <span class="ql-formats" style="float: right;">
+          <div class="loader" id="exportLoader" style="visibility: hidden;"></div>
+      </span> -->
+
+    </div>
+  </quill-editor>
+</div>

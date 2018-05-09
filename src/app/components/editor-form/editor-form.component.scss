@@ -1,0 +1,46 @@
+.btn-primary {
+  background-color: #82ac60;
+  border-color: #82ac60;
+}
+
+.hide {
+  display: none;
+}
+
+#proveBtn {
+  background-color: grey;
+  border-color: grey;
+}
+
+#reproveBtn {
+  background-color: grey;
+  border-color: grey;
+}
+
+#exerciseBtn {
+  background-color: grey;
+  border-color: grey;
+}
+
+#addProveBtn {
+  background-color: grey;
+  border-color: grey;
+}
+
+#addReproveBtn {
+  background-color: grey;
+  border-color: grey;
+}
+
+#addExerciseBtn {
+  background-color: grey;
+  border-color: grey;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}

@@ -1,0 +1,102 @@
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  margin-bottom: 10px !important;
+}
+
+quill-editor {
+  display: block;
+  position: fixed;
+  bottom: 60px;
+  top: 75px;
+  width: 56%;
+}
+
+// .ng-invoalid {
+//   border: 1px dashed red;
+// }
+
+/* Set default font-family */
+[quill-editor-element] {
+  // font-family: "DejaVu Math TeX Gyre";
+  font-family: "Asana Math";
+}
+
+.ql-container {
+  font-size: 12px;
+}
+
+.functionBtn {
+  font-weight: bold;
+  line-height: 18px;
+}
+
+#exportBtn:disabled {
+  color: #F1F1F1;
+  font-family: "arial";
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #555555;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#inLineHolder {
+
+}
+
+/* symbol button */
+
+.symbolBtn {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+  font-family: "Times";
+}
+
+.symbolBtn {
+  height: auto;
+  max-height: 200px;
+  width: 40px !important;
+  overflow-x: hidden;
+  font-family: "Times";
+}
+
+.symbolBtn2 {
+  width: 100px !important;
+  float: left !important;
+  text-align: left;
+  font-family: "Times";
+}
+
+.saveBtn {
+  width: 100px !important;
+  float: left !important;
+  text-align: left;
+  font-family: "Times";
+}
+
+
+.dropdown-toggle::after {
+    display:none
+}
+
+.d-inline-block2 {
+  display: inline-block;
+}
+
+
+#dropdownBasic2 {
+  width: 90px;
+}
