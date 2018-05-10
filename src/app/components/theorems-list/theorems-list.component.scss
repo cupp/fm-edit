@@ -15,7 +15,7 @@
   box-shadow: 2px 2px 2px 2px #ccc;
   padding: 6px;
   margin-bottom: 10px;
-  height: 55px; /* Had opacity: 0.8; */
+  height: 90px; /* Had opacity: 0.8; */
   &:hover {
     background-color: #757d6e !important;
   }
@@ -30,14 +30,14 @@
 }
 
 .theoremTitle {
-  font-size: 0.6em;
+  font-size: 1em;
   color: white;
 }
 
 .theoremEquation {
   text-align: center;
   color: white;
-  font-size: 0.75em;
+  font-size: 1em;
 }
 
 #listElements {

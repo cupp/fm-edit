@@ -371,6 +371,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, this.disjunctionUnicode + ' ', ';o', 'r');                             // disjunction
     this.bindKey(quill, this.disjunctionUnicode + ' ', '\\|', 220, true);                      // disjunction
     this.bindKey(quill, '¬', '!', '1', true);                                                  // negation
+    this.bindKey(quill, this.notEquivalesUnicode + ' ', '!', 187);
     this.bindKey(quill, this.textSubUnicode + ' ', ';t', 's');                                 // replace by/gets
     this.bindKey(quill, this.textSubUnicode + ' ', ':', 187);                                  // replace by/gets
     this.bindKey(quill, '→ ', '-', 190, true);                                                 // right arrow
@@ -387,6 +388,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, 'Name:\t\t\t\t\nPin:\t\t\t\t\t\nClass:\t\t\t\t\nAssignment:\t\n\nProve ', ';hea', 'd');
     this.bindHint(quill, 'Prove ', ';p', 'r');
     this.bindKey(quill, 'by showing equivalence to previous theorem', ';', '1');
+    this.bindKey(quill, 'by showing the LHS is equivalent to the RHS', ';', '2');
+    this.bindKey(quill, 'by showing the RHS is equivalent to the LHS', ';', '3');
+    this.bindKey(quill, 'by showing the LHS implies the RHS', ';', '4');
+    this.bindKey(quill, 'by showing the LHS follows from the RHS', ';', '5');
+    this.bindKey(quill, 'by assuming the conjuncts of the antecedent', ';', '6');
     this.bindKey(quill, '\nwhich is ', ';', 'w');
 
     // // sigma
