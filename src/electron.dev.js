@@ -41,13 +41,22 @@ const createWindow = () => {
                 submenu: [
                     {
                         label: "Open", 
-                        role: 'open',
                         click: () => {
-                            dialog.showOpenDialog();
+                            win.webContents.send('open-file');
                         }
                     },
-                    {label: "Save", role: 'save'},
-                    {label: "Save As", role: 'saveas'}
+                    {
+                        label: "Save", 
+                        click: () => {
+                            win.webContents.send('save-file');
+                        }
+                    },
+                    {
+                        label: "Save As", 
+                        click: () => {
+                            win.webContents.send('saveAs-file');
+                        }
+                    }
                 ]
             },
             {

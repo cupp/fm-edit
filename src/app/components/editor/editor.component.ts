@@ -33,6 +33,11 @@ import {HttpClient} from '@angular/common/http';
 
 import {environment} from '../../../environments/environment';
 
+declare const window: any;
+const { remote, ipcRenderer} = window.require('electron');
+const fs = remote.require('fs');
+const { app, BrowserWindow} = window.require('electron');
+const { dialog } = window.require('electron').remote;
 
 // import {fs} from = require('fs');
 // const {dialog} = require('electron').remote;
@@ -131,6 +136,11 @@ export class EditorComponent implements OnInit, OnDestroy {
               private editorService: EditorService,
               private http: HttpClient) {
 
+
+    ipcRenderer.on('open-file', this.open.bind(this));
+    ipcRenderer.on('save-file', this.save.bind(this));
+    ipcRenderer.on('saveAs-file', this.save.bind(this));
+
     this.infoFilledSubscription = this.editorService.infoFilledChange.subscribe(infoFilled => {
       this.infoFilled = infoFilled;
     });
@@ -162,6 +172,28 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild('editor') editor: QuillEditorComponent;
+
+
+  open() {
+    this.filename = dialog.showOpenDialog({properties: ['openFile', 'openDirectory']}).toString();
+    const quill = this.editorInstance;
+    const textBuffer = fs.readFileSync(this.filename);
+    const text = textBuffer.toString();
+    quill.setText(text);
+  }
+
+  save() {
+    if (this.filename !== '') {
+      fs.writeFileSync(this.filename, 'My name is Luca');
+    } else {
+      this.file('saveAs');
+    }
+  }
+
+  saveAs() {
+    this.filename = dialog.showSaveDialog({properties: ['saveFile', 'openDirectory']});
+    fs.writeFileSync(this.filename, 'My name is Luca');
+  }
 
   ngOnInit() {
     this.form
@@ -283,7 +315,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.editorService.toggleFormFilled();
   }
 
-  bindKey(quill, text: string, prefix: string, key: any, shift: boolean = false, replace: boolean = true, hint = false, pair = false) {
+  bindKey(quill, text: string, prefix: string, key: any, shift: boolean = false, replace: boolean = true, hint = false, pair = false, quant = false) {
     // console.log('keySeq type = ' + typeof keySeq);
     // const key: string = (typeof keySeq === 'number' ? keySeq : keySeq.substr(keySeq.length - 1, 1));
     // const prefix: string = (typeof keySeq === 'number' ? '' : (keySeq.length > 1 ? keySeq.substr(0, keySeq.length - 1) : ''));
@@ -297,7 +329,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     const bindOptions = {
       collapsed: true,
       prefix: new RegExp(anchor + prefix + '$'),
-      // offset: -1
+      // offset: -10
     };
     if (hint) {
       // bindOptions.offset = 5 + prefix.length;
@@ -317,7 +349,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         quill.deleteText(range.index - off, off);
       }
       quill.insertText(range.index - (replace ? off : 0), text);
-      quill.setSelection(range.index + (hint ? + text.length - 7 - preLength : preLength + text.length - (pair ? 1 : 2)));
+      quill.setSelection(range.index + (hint ? + text.length - 7 - preLength : preLength + text.length - (pair ? 1 : quant ? 11 : 2)));
     });
   }
 
@@ -327,6 +359,10 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   bindPair(quill, text: string, prefix: string, key: any, shift: boolean = false, replace: boolean = true) {
     this.bindKey(quill, text, prefix, key, shift, replace, false, true);
+  }
+
+  bindQuant(quill, text: string, prefix: string, key: any, shift: boolean = false, replace: boolean = true) {
+    this.bindKey(quill, text, prefix, key, shift, replace, false, false, true);
   }
 
   addBindingCreated(quill) {
@@ -372,7 +408,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, this.disjunctionUnicode + ' ', '\\|', 220, true);                      // disjunction
     this.bindKey(quill, '¬', '!', '1', true);                                                  // negation
     this.bindKey(quill, this.notEquivalesUnicode + ' ', '!', 187);
-    this.bindKey(quill, this.textSubUnicode + ' ', ';t', 's');                                 // replace by/gets
     this.bindKey(quill, this.textSubUnicode + ' ', ':', 187);                                  // replace by/gets
     this.bindKey(quill, '→ ', '-', 190, true);                                                 // right arrow
     this.bindKey(quill, this.leftBracketUnicode + ' ', ';l', 'b');                             // left hint bracket
@@ -384,6 +419,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, this.intersectionUnicode + ' ', '&', '7');                             // intersection
     this.bindKey(quill, '÷ ', '/', 191);                                                       // division symbol
     this.bindKey(quill, '⋅ ', '\\*', '8', true);                                               // multiplication symbol
+    this.bindKey(quill, this.genQuantifierUnicode + ' ', ';s', 't');                           // star symbol
 
     this.bindKey(quill, 'Name:\t\t\t\t\nPin:\t\t\t\t\t\nClass:\t\t\t\t\nAssignment:\t\n\nProve ', ';hea', 'd');
     this.bindHint(quill, 'Prove ', ';p', 'r');
@@ -394,6 +430,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, 'by showing the LHS follows from the RHS', ';', '5');
     this.bindKey(quill, 'by assuming the conjuncts of the antecedent', ';', '6');
     this.bindKey(quill, '\nwhich is ', ';', 'w');
+    this.bindKey(quill, 'textual substitution ', ';t', 's');
+
+    this.bindQuant(quill, '(' + this.genQuantifierUnicode + ' |  : )', ';g', 'q');
 
     // // sigma
     // quill.keyboard.addBinding({key: 'q'}, {
@@ -718,19 +757,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     //     quill.setSelection(range.index + 1);
     //   });
 
-
-    // star
-    quill.keyboard.addBinding({key: 't'}, {
-        empty: false,
-        collapsed: true,
-        prefix: /\S*;s$/
-      },
-      (range, context) => {
-        quill.format('bold', false);
-        quill.format('italic', false);
-        quill.deleteText(range.index - 2, 2); // range.index-1 = user's cursor -1 -> where = character is
-        quill.insertText(range.index - 2, this.genQuantifierUnicode);
-      });
 
 
     /////////// //////////////////////// not + symbols //////////////////////// ////////////////////////
