@@ -139,7 +139,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     ipcRenderer.on('open-file', this.open.bind(this));
     ipcRenderer.on('save-file', this.save.bind(this));
-    ipcRenderer.on('saveAs-file', this.save.bind(this));
+    ipcRenderer.on('saveAs-file', this.saveAs.bind(this));
 
     this.infoFilledSubscription = this.editorService.infoFilledChange.subscribe(infoFilled => {
       this.infoFilled = infoFilled;
@@ -315,6 +315,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.editorService.toggleFormFilled();
   }
 
+
   bindKey(quill, text: string, prefix: string, key: any, shift: boolean = false, replace: boolean = true, hint = false, pair = false, quant = false) {
     // console.log('keySeq type = ' + typeof keySeq);
     // const key: string = (typeof keySeq === 'number' ? keySeq : keySeq.substr(keySeq.length - 1, 1));
@@ -334,8 +335,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     if (hint) {
       // bindOptions.offset = 5 + prefix.length;
     }
-    console.log(bindObj);
-    console.log('prefix = ' + prefix);
     quill.keyboard.addBinding(bindObj, bindOptions,
     (range, context) => {
       quill.format('bold', false);
@@ -373,11 +372,20 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.hideSymbols = true;
     });
 
+    quill.keyboard.addBinding(
+      {key: 221},
+      {
+        collapsed: true
+      },
+      (range, context) => {
+        quill.setSelection(range.index + 3);
+      }
+    );
+
     this.bindHint(quill, this.impliesUnicode + this.shortHintUnicode, ';i', 'm');             // implies
     this.bindHint(quill, this.impliesUnicode + this.shortHintUnicode, '>', 190, true);        // implies
     this.bindHint(quill, this.followsFromUnicode + this.shortHintUnicode, ';f', 'f');         // follows from
     this.bindHint(quill, this.followsFromUnicode + this.shortHintUnicode, '<', 188, true);    // follows from
-    this.bindHint(quill, this.equalsUnicode + this.hintUnicode, ';e', 'q');                   // equals
     this.bindHint(quill, this.equalsUnicode + this.hintUnicode, '', 187);                     // equals
     this.bindHint(quill, this.lessThanUnicode + this.hintUnicode, ';l', 't');                 // less than
     this.bindHint(quill, this.lessThanOrEqUnicode + this.hintUnicode, ';l', 'e');             // less than or equal to
@@ -400,7 +408,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, this.greaterThanUnicode + ' ', ';g', 't');                             // greater than
     this.bindKey(quill, this.lessThanOrEqUnicode + ' ', ';l', 'e');                            // less than or equal
     this.bindKey(quill, this.greaterThanorEqUnicode + ' ', ';g', 'e');                         // greater than or equal
-    this.bindKey(quill, this.equivalesUnicode + ' ', ';e', 'q');                               // equivales
     this.bindKey(quill, this.equivalesUnicode + ' ', '=', 187);                                // equivales
     this.bindKey(quill, this.conjuctionUnicode + ' ', ';a', 'n');                              // conjunction
     this.bindKey(quill, this.conjuctionUnicode + ' ', '&', '7', true);                         // conjunction
@@ -420,6 +427,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, '÷ ', '/', 191);                                                       // division symbol
     this.bindKey(quill, '⋅ ', '\\*', '8', true);                                               // multiplication symbol
     this.bindKey(quill, this.genQuantifierUnicode + ' ', ';s', 't');                           // star symbol
+    this.bindKey(quill, this.universalQuantifierUnicode, ';f', 'a');                           // forAll symbol
+    this.bindKey(quill, this.existentialQuanitiferUnicode, ';e', 'x');                         // exists symbol
 
     this.bindKey(quill, 'Name:\t\t\t\t\nPin:\t\t\t\t\t\nClass:\t\t\t\t\nAssignment:\t\n\nProve ', ';hea', 'd');
     this.bindHint(quill, 'Prove ', ';p', 'r');
@@ -433,6 +442,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.bindKey(quill, 'textual substitution ', ';t', 's');
 
     this.bindQuant(quill, '(' + this.genQuantifierUnicode + ' |  : )', ';g', 'q');
+    this.bindQuant(quill, '(' + this.universalQuantifierUnicode + ' |  : )', ';u', 'q');
+    this.bindQuant(quill, '(' + this.existentialQuanitiferUnicode + ' |  : )', ';e', 'q');
 
     // // sigma
     // quill.keyboard.addBinding({key: 'q'}, {
@@ -630,33 +641,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         quill.deleteText(range.index - 2, 2); // range.index-1 = user's cursor -1 -> where = character is
         quill.insertText(range.index - 2, ' ~ ');
         quill.setSelection(range.index + 1);
-      });
-
-    // for all
-    quill.keyboard.addBinding({key: 'a'}, {
-        empty: false,
-        collapsed: true,
-        prefix: /\S*;f$/
-      },
-      (range, context) => {
-        quill.format('bold', false);
-        quill.format('italic', false);
-        quill.deleteText(range.index - 2, 2); // range.index-1 = user's cursor -1 -> where = character is
-        quill.insertText(range.index - 2, ' ' + this.universalQuantifierUnicode);
-        quill.setSelection(range.index);
-      });
-
-    // there exists
-    quill.keyboard.addBinding({key: 'x'}, {
-        empty: false,
-        collapsed: true,
-        prefix: /\S*;e$/
-      },
-      (range, context) => {
-        quill.format('bold', false);
-        quill.format('italic', false);
-        quill.deleteText(range.index - 2, 2); // range.index-1 = user's cursor -1 -> where = character is
-        quill.insertText(range.index - 2, ' ' + this.existentialQuanitiferUnicode);
       });
 
     // power set
